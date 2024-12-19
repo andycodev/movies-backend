@@ -2,7 +2,6 @@ package com.andycodev.movies_backend.models;
 
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(name = "movies")
 public class Movie {
