@@ -36,6 +36,12 @@ FROM openjdk:21-jdk-slim as runtime
 # Copia el archivo JAR generado en el contenedor anterior
 COPY --from=build /app/target/movies-backend-0.0.1-SNAPSHOT.jar /app/movies-backend.jar
 
+# Verifica que el archivo JAR se ha copiado correctamente
+RUN ls -l /app/movies-backend.jar
+
+# Cambia los permisos del archivo JAR
+RUN chmod +x /app/movies-backend.jar
+
 # Expone el puerto 8080
 EXPOSE 8080
 
