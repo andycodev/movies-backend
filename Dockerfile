@@ -10,6 +10,13 @@ WORKDIR /app
 # Copia el código fuente al contenedor
 COPY . /app
 
+# Verifica que las variables de entorno estén siendo pasadas correctamente
+RUN echo "DB_HOST: $DB_HOST"
+RUN echo "DB_PORT: $DB_PORT"
+RUN echo "DB_NAME: $DB_NAME"
+RUN echo "DB_USER: $DB_USER"
+RUN echo "DB_PASSWORD: $DB_PASSWORD"
+
 # Ejecuta Maven para construir el proyecto y deshabilitar las pruebas
 RUN mvn clean install -DskipTests
 
