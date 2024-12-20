@@ -1,14 +1,14 @@
-# Usa la imagen oficial de OpenJDK 21 y Maven
-FROM openjdk:21-jdk as build
-
-# Usa la imagen con OpenJDK 21 y Maven
-FROM maven:3.8.6-openjdk-21 as build
+# Usa la imagen base de Maven con OpenJDK
+FROM maven:3.8.6-openjdk as build
 
 # Establece el directorio de trabajo
 WORKDIR /app
 
 # Copia el código fuente al contenedor
 COPY . /app
+
+# Instala el JDK 21 (ya que la imagen base tiene OpenJDK, pero no especifica la versión)
+RUN apt-get update && apt-get install -y openjdk-21-jdk
 
 # Ejecuta el comando Maven para construir el archivo JAR
 RUN mvn clean install
@@ -24,6 +24,7 @@ EXPOSE 8080
 
 # Comando para ejecutar la aplicación
 CMD ["java", "-jar", "movies-backend.jar"]
+
 
 
 
