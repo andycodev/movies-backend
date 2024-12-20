@@ -1,14 +1,14 @@
-# Usa la imagen base de Maven con OpenJDK
+# Usa la imagen base de Eclipse Temurin con JDK 21
 FROM eclipse-temurin:21-jdk as build
+
+# Instala Maven
+RUN apt-get update && apt-get install -y maven
 
 # Establece el directorio de trabajo
 WORKDIR /app
 
 # Copia el código fuente al contenedor
 COPY . /app
-
-# Instala el JDK 21 (ya que la imagen base tiene OpenJDK, pero no especifica la versión)
-RUN apt-get update && apt-get install -y openjdk-21-jdk
 
 # Ejecuta el comando Maven para construir el archivo JAR
 RUN mvn clean install
