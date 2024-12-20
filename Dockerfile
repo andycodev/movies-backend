@@ -1,29 +1,29 @@
-# Usa la imagen base de Eclipse Temurin con JDK 21
-FROM eclipse-temurin:21-jdk as build
-
-# Instala Maven
-RUN apt-get update && apt-get install -y maven
+# Usa una imagen con Maven y OpenJDK 21
+FROM maven:3.8.6-openjdk-21 as build
 
 # Establece el directorio de trabajo
 WORKDIR /app
 
-# Copia el código fuente al contenedor
+# Copia el contenido de tu proyecto al contenedor
 COPY . /app
 
-# Ejecuta el comando Maven para construir el archivo JAR
-RUN mvn clean install
+# Ejecuta Maven para construir el proyecto y deshabilitar las pruebas
+RUN mvn clean install -DskipTests
 
 # Usa una imagen base con OpenJDK 21 para ejecutar la aplicación
-FROM openjdk:21-jdk-slim as runtime
+FROM openjdk:21-jdk-slim
 
-# Copia el archivo JAR generado en el contenedor anterior
+# Establece el directorio de trabajo
+WORKDIR /app
+
+# Copia el archivo JAR generado desde el contenedor anterior
 COPY --from=build /app/target/movies-backend-0.0.1-SNAPSHOT.jar /app/movies-backend.jar
 
-# Expone el puerto 8080
+# Exponer el puerto en el que la aplicación Spring Boot escuchará (por defecto, 8080)
 EXPOSE 8080
 
 # Comando para ejecutar la aplicación
-CMD ["java", "-jar", "movies-backend.jar"]
+CMD ["java", "-jar", "/app/movies-backend.jar"]
 
 
 
