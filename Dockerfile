@@ -1,3 +1,6 @@
+# Usa la imagen base de Eclipse Temurin con JDK 21
+FROM eclipse-temurin:21-jdk as build
+
 # Define las variables de entorno
 ARG DB_HOST
 ARG DB_PORT
@@ -11,9 +14,6 @@ ENV DB_PORT=$DB_PORT
 ENV DB_NAME=$DB_NAME
 ENV DB_USER=$DB_USER
 ENV DB_PASSWORD=$DB_PASSWORD
-
-# Usa la imagen base de Eclipse Temurin con JDK 21
-FROM eclipse-temurin:21-jdk as build
 
 # Instala Maven
 RUN apt-get update && apt-get install -y maven
@@ -41,7 +41,3 @@ EXPOSE 8080
 
 # Comando para ejecutar la aplicación
 CMD ["java", "-jar", "movies-backend.jar"]
-
-
-
-
