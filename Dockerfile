@@ -28,7 +28,7 @@ COPY . /app
 RUN mvn clean install -DskipTests
 
 # Ejecuta el comando Maven para construir el archivo JAR
-#RUN mvn clean install
+RUN mvn clean install
 
 # Usa una imagen base con OpenJDK 21 para ejecutar la aplicación
 FROM openjdk:21-jdk-slim as runtime
@@ -36,14 +36,11 @@ FROM openjdk:21-jdk-slim as runtime
 # Copia el archivo JAR generado en el contenedor anterior
 COPY --from=build /app/target/movies-backend-0.0.1-SNAPSHOT.jar /app/movies-backend.jar
 
-# Verifica que el archivo JAR se ha copiado correctamente
-RUN ls -l /app
+# Establece el directorio de trabajo
+WORKDIR /app
 
 # Cambia los permisos del archivo JAR
 RUN chmod +x movies-backend.jar
 
-# Establece el directorio de trabajo
-WORKDIR /app
-
 # Ejecuta el comando Java
-CMD ["java", "-jar", "./movies-backend.jar"]
+CMD ["java", "-jar", "movies-backend.jar"]
