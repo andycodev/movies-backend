@@ -1,3 +1,17 @@
+# Define las variables de entorno
+ARG DB_HOST
+ARG DB_PORT
+ARG DB_NAME
+ARG DB_USER
+ARG DB_PASSWORD
+
+# Establece las variables de entorno
+ENV DB_HOST=$DB_HOST
+ENV DB_PORT=$DB_PORT
+ENV DB_NAME=$DB_NAME
+ENV DB_USER=$DB_USER
+ENV DB_PASSWORD=$DB_PASSWORD
+
 # Usa la imagen base de Eclipse Temurin con JDK 21
 FROM eclipse-temurin:21-jdk as build
 
@@ -9,13 +23,6 @@ WORKDIR /app
 
 # Copia el código fuente al contenedor
 COPY . /app
-
-# Verifica que las variables de entorno estén siendo pasadas correctamente
-RUN echo "DB_HOST: $DB_HOST"
-RUN echo "DB_PORT: $DB_PORT"
-RUN echo "DB_NAME: $DB_NAME"
-RUN echo "DB_USER: $DB_USER"
-RUN echo "DB_PASSWORD: $DB_PASSWORD"
 
 # Ejecuta Maven para construir el proyecto y deshabilitar las pruebas
 RUN mvn clean install -DskipTests
