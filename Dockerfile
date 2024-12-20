@@ -1,14 +1,23 @@
-# Usa una imagen base de JDK 21
-FROM openjdk:21-jdk-slim
+# Usa una imagen con Maven y JDK 21
+FROM maven:3.9.1-eclipse-temurin-21 as build
 
-# Establece el directorio de trabajo en el contenedor
+# Establece el directorio de trabajo
 WORKDIR /app
 
-# Copia el archivo .jar de la aplicación al contenedor
-COPY target/movies-backend-0.0.1-SNAPSHOT.jar /app/app.jar
+# Copia el código fuente al contenedor
+COPY . /app
 
-# Expón el puerto en el que corre la aplicación
+# Ejecuta el comando Maven para construir el archivo JAR
+RUN mvn clean install
+
+# Usa una imagen de JDK 21 para ejecutar la aplicación
+FROM openjdk:21-jdk-slim
+
+# Copia el archivo JAR del contenedor anterior
+COPY --from=build /app/target/movies-backend-0.0.1-SNAPSHOT.jar /app/movies-backend.jar
+
+# Expone el puerto
 EXPOSE 8080
 
-# Ejecuta la aplicación Spring Boot
-CMD ["java", "-jar", "app.jar"]
+# Comando para ejecutar la aplicación
+CMD ["java", "-jar", "movies-backend.jar"]
