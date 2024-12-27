@@ -28,7 +28,7 @@ COPY . /app
 RUN mvn clean install -DskipTests
 
 # Ejecuta el comando Maven para construir el archivo JAR
-RUN mvn clean install
+#RUN mvn clean install
 
 # Usa una imagen base con OpenJDK 21 para ejecutar la aplicación
 FROM openjdk:21-jdk-slim as runtime
