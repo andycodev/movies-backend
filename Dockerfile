@@ -1,5 +1,8 @@
-# Usa una imagen base de Maven con JDK 21
-FROM maven:3-jdk-21 as build
+# Usa una imagen base de Eclipse Temurin con JDK 21
+FROM eclipse-temurin:21-jdk as build
+
+# Instala Maven
+RUN apt-get update && apt-get install -y maven
 
 # Define las variables de entorno
 ARG DB_HOST
