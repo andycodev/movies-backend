@@ -1,5 +1,5 @@
-# Usa la imagen base de Eclipse Temurin con JDK 21
-FROM eclipse-temurin:21-jdk as build
+# Usa una imagen base de Maven con JDK 21
+FROM maven:3-jdk-21 as build
 
 # Define las variables de entorno
 ARG DB_HOST
@@ -15,9 +15,6 @@ ENV DB_NAME=$DB_NAME
 ENV DB_USER=$DB_USER
 ENV DB_PASSWORD=$DB_PASSWORD
 
-# Instala Maven
-RUN apt-get update && apt-get install -y maven
-
 # Establece el directorio de trabajo
 WORKDIR /app
 
@@ -26,9 +23,6 @@ COPY . /app
 
 # Ejecuta Maven para construir el proyecto y deshabilitar las pruebas
 RUN mvn clean install -DskipTests
-
-# Ejecuta el comando Maven para construir el archivo JAR
-#RUN mvn clean install
 
 # Usa una imagen base con OpenJDK 21 para ejecutar la aplicación
 FROM openjdk:21-jdk-slim as runtime
